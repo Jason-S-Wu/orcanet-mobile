@@ -1,21 +1,22 @@
-# @rneui/template
+# orcanet-mobile
 
-## React Native Elements Expo Template
+Stony Brook Unveristy CSE 416 project
+Creating moblie using React Native
 
-### Usage
+## Getting Started
 
-#### Stable
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-        expo init app --template @rneui/template
+### Prerequisites
 
-#### Stable Typescript
+Before you begin, ensure you have met the following requirements:
 
-        expo init app --template @rneui/template@ts
+- Node.js and npm installed on your machine.
 
-#### Bleeding Edge (Experimental)
+- Install Expo Go on your either IOS or Android device
 
-        expo init app --template @rneui/template@edge
+### Setting up the development environment
 
-#### Bleeding Edge Typescript (Experimental)
-
-        expo init app --template @rneui/template@edge-ts
+- git clone the repo onto your local device
+- npm install
+- npx expo start
