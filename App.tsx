@@ -1,7 +1,6 @@
 import React from 'react';
 import { createTheme, ThemeProvider } from '@rneui/themed';
-import Component from './components/MyComponent';
-import NavBar from 'components/NavBar';
+import Main from 'components/Main';
 
 const theme = createTheme({
   lightColors: {},
@@ -11,8 +10,7 @@ const theme = createTheme({
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
-      <NavBar />
-      <Component />
+      <Main />
     </ThemeProvider>
   );
 }
