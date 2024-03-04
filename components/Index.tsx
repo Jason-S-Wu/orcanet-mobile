@@ -67,11 +67,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#eee',
-    padding: 30,
+    paddingTop: 10,
     width: '100%',
   },
   topBarButton: {
-    paddingHorizontal: 20,
+    padding: 30,
+    marginTop: 40,
   },
   content: {
     flex: 1,
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   tab: {
-    paddingHorizontal: 20,
+    padding: 20,
+    paddingHorizontal: 30,
   },
 });
 
