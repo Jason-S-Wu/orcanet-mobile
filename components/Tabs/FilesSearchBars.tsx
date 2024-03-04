@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from @expo/vector-icons
+import { Ionicons } from "@expo/vector-icons";
 
 const FilesSearchBar = ({ onChangeText }) => {
   const [searchText, setSearchText] = useState("");
 
   const handleChangeText = (text) => {
     setSearchText(text);
-    onChangeText(text); // Pass the text to the parent component
+    onChangeText(text);
   };
 
   const handleCancelSearch = () => {
-    setSearchText(""); // Clear the search text
-    onChangeText(""); // Pass an empty string to the parent component
+    setSearchText("");
+    onChangeText("");
   };
 
   return (
