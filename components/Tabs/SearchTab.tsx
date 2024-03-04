@@ -34,6 +34,7 @@ const SearchTab = () => {
     <View style={styles.container}>
       <FilesSearchBar onChangeText={handleSearch} />
       <FlatList
+        style={styles.listView}
         data={searchResults}
         renderItem={({item}) => (
           <TouchableOpacity
@@ -58,6 +59,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  listView: {
+    width: '90%',
   },
   item: {
     padding: 20,
