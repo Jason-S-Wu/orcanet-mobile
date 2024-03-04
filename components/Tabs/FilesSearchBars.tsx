@@ -20,7 +20,7 @@ const FilesSearchBar = ({ onChangeText }) => {
       <Ionicons name="search" size={20} color="gray" style={styles.icon} />
       <TextInput
         style={styles.input}
-        placeholder="Search for movies"
+        placeholder="Search for files"
         value={searchText}
         onChangeText={handleChangeText}
       />
