@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ListItem, Icon } from '@rneui/themed';
+import {ListItem, Icon} from '@rneui/themed';
 
 const Menu = () => {
   return (

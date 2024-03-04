@@ -1,16 +1,8 @@
 import React from 'react';
-import { createTheme, ThemeProvider } from '@rneui/themed';
-import Main from 'components/Main';
+import Index from 'components/Index';
 
-const theme = createTheme({
-  lightColors: {},
-  darkColors: {},
-});
+const App = () => {
+  return <Index />;
+};
 
-export default function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Main />
-    </ThemeProvider>
-  );
-}
+export default App;
