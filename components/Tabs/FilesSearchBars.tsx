@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import React, {useState} from 'react';
+import {View, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
+import {Ionicons} from '@expo/vector-icons';
 
-const FilesSearchBar = ({ onChangeText }) => {
-  const [searchText, setSearchText] = useState("");
+const FilesSearchBar = ({onChangeText}) => {
+  const [searchText, setSearchText] = useState('');
 
-  const handleChangeText = (text) => {
+  const handleChangeText = text => {
     setSearchText(text);
     onChangeText(text);
   };
 
   const handleCancelSearch = () => {
-    setSearchText("");
-    onChangeText("");
+    setSearchText('');
+    onChangeText('');
   };
 
   return (
@@ -24,7 +24,7 @@ const FilesSearchBar = ({ onChangeText }) => {
         value={searchText}
         onChangeText={handleChangeText}
       />
-      {searchText !== "" && (
+      {searchText !== '' && (
         <TouchableOpacity onPress={handleCancelSearch}>
           <Ionicons
             name="close-circle-outline"
@@ -40,9 +40,9 @@ const FilesSearchBar = ({ onChangeText }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f1f1f1",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f1f1f1',
     borderRadius: 10,
     paddingVertical: 8,
     paddingHorizontal: 12,

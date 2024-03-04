@@ -1,36 +1,31 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
-import { staticFiles } from "components/api/FilesFromNode";
-import FilesSearchBar from "./FilesSearchBars";
+import React, {useState} from 'react';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
+import {staticFiles} from 'components/api/FilesFromNode';
+import FilesSearchBar from './FilesSearchBars';
 
 const SearchTab = () => {
-  const [searchResults, setSearchResults] = useState([]);
-  const [chosenFile, setChosenFile] = useState(null);
-  const [searchText, setSearchText] = useState("");
-
   const filesFromNode = staticFiles; // for now
 
-  const handleSearch = (text) => {
+  const [searchResults, setSearchResults] = useState(filesFromNode); // By default, show all files we can think about only showing the first 10 and continue loading if the network gets larger
+  const [chosenFile, setChosenFile] = useState(null);
+  const [searchText, setSearchText] = useState('');
+
+  const handleSearch = text => {
     setSearchText(text);
-    if (text === "") {
-      setSearchResults([]);
+    if (text === '') {
+      // set search results to all files if search bar is empty
+      setSearchResults(filesFromNode);
       return;
     }
     // Simulate search by filtering a static list of files
-    const filteredResults = filesFromNode.filter((file) =>
+    const filteredResults = filesFromNode.filter(file =>
       file.toLowerCase().startsWith(text.toLowerCase())
     );
     setSearchResults(filteredResults);
   };
 
-  const handleFileSelect = (file) => {
-    setSearchText("");
+  const handleFileSelect = file => {
+    setSearchText('');
     setSearchResults([]);
     setChosenFile(file);
   };
@@ -40,7 +35,7 @@ const SearchTab = () => {
       <FilesSearchBar onChangeText={handleSearch} />
       <FlatList
         data={searchResults}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <TouchableOpacity
             onPress={() => handleFileSelect(item)}
             style={styles.item}
@@ -48,7 +43,7 @@ const SearchTab = () => {
             <Text>{item}</Text>
           </TouchableOpacity>
         )}
-        keyExtractor={(item) => item}
+        keyExtractor={item => item}
       />
       <View style={styles.chosenFilesContainer}>
         <Text style={styles.chosenFilesText}>Chosen File:</Text>
@@ -61,20 +56,20 @@ const SearchTab = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   item: {
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
   },
   chosenFilesContainer: {
     marginHorizontal: 20,
     marginTop: 20,
   },
   chosenFilesText: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 10,
   },
 });
