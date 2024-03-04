@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Header } from "@rneui/base";
-import { View } from "react-native";
-import Menu from "./Menu";
-import Home from "./Index";
+import React, {useState} from 'react';
+import {Header} from '@rneui/base';
+import {View} from 'react-native';
+import Menu from './Menu';
+import Home from './Index';
 
 const Main = () => {
-  const [menu, setMenu] = useState("Home");
+  const [menu, setMenu] = useState('Home');
 
   const handleMenuClick = (menuItem: string) => {
     setMenu(menuItem);
@@ -13,9 +13,9 @@ const Main = () => {
 
   const renderPage = () => {
     switch (menu) {
-      case "Home":
+      case 'Home':
         return <Home />;
-      case "Menu":
+      case 'Menu':
         return <Menu />;
       default:
         return null;
@@ -28,18 +28,18 @@ const Main = () => {
         barStyle="default"
         centerComponent={{
           text: menu,
-          style: { color: "#fff", fontSize: 25 },
+          style: {color: '#fff', fontSize: 25},
         }}
         leftComponent={{
-          icon: "menu",
-          color: "#fff",
-          onPress: () => handleMenuClick("Menu"),
+          icon: 'menu',
+          color: '#fff',
+          onPress: () => handleMenuClick('Menu'),
           size: 60,
         }}
         rightComponent={{
-          icon: "home",
-          color: "#fff",
-          onPress: () => handleMenuClick("Home"),
+          icon: 'home',
+          color: '#fff',
+          onPress: () => handleMenuClick('Home'),
           size: 60,
         }}
       />
