@@ -17,6 +17,7 @@ const Index = () => {
         return <SearchTab />;
       case 'Stats':
         return <StatsTab />;
+      // Market Tab
       case 'Setting':
         return <SettingTab />;
       default:
