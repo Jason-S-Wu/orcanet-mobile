@@ -4,6 +4,7 @@ import ViewerTab from './Tabs/ViewerTab';
 import SearchTab from './Tabs/SearchTab';
 import StatsTab from './Tabs/StatsTab';
 import SettingTab from './Tabs/SettingTab';
+import MarketTab from './Tabs/MarketTab';
 import {Feather, FontAwesome, Ionicons} from '@expo/vector-icons';
 
 const Index = () => {
@@ -17,9 +18,10 @@ const Index = () => {
         return <SearchTab />;
       case 'Stats':
         return <StatsTab />;
-      // Market Tab
       case 'Setting':
         return <SettingTab />;
+      case 'Market':
+        return <MarketTab />;
       default:
         return null;
     }
@@ -51,6 +53,12 @@ const Index = () => {
           style={styles.tab}
         >
           <Feather name="bar-chart" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setActiveTab('Market')}
+          style={styles.tab}
+        >
+          <Feather name="file" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>
