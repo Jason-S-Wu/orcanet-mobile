@@ -29,6 +29,7 @@ const Index = () => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.heading}>{activeTab}</Text>
+        <Text style={styles.heading}>Bal: 0 </Text>
         <TouchableOpacity style={styles.topBarButton}>
           <Ionicons name="settings" size={24} color="black" />
         </TouchableOpacity>
