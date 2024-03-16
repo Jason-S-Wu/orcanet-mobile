@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import ViewerTab from './Tabs/ViewerTab';
-import SearchTab from './Tabs/SearchTab';
 import StatsTab from './Tabs/StatsTab';
 import SettingTab from './Tabs/SettingTab';
 import MarketTab from './Tabs/MarketTab';
@@ -14,14 +13,13 @@ const Index = () => {
     switch (activeTab) {
       case 'Viewer':
         return <ViewerTab />;
-      case 'Search':
-        return <SearchTab />;
+      case 'Market':
+        return <MarketTab />;
       case 'Stats':
         return <StatsTab />;
       case 'Setting':
         return <SettingTab />;
-      case 'Market':
-        return <MarketTab />;
+
       default:
         return null;
     }
@@ -43,7 +41,7 @@ const Index = () => {
           <FontAwesome name="play" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setActiveTab('Search')}
+          onPress={() => setActiveTab('Market')}
           style={styles.tab}
         >
           <Feather name="file" size={24} color="black" />
@@ -53,12 +51,6 @@ const Index = () => {
           style={styles.tab}
         >
           <Feather name="bar-chart" size={24} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActiveTab('Market')}
-          style={styles.tab}
-        >
-          <Feather name="file" size={24} color="black" />
         </TouchableOpacity>
       </View>
     </View>
