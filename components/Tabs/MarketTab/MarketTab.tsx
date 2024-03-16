@@ -71,7 +71,6 @@ const MarketTab = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Market</Text>
       <TextInput
         style={styles.searchBar}
         placeholder="Search by hash name"
@@ -94,11 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   searchBar: {
     width: '90%',
     height: 40,
@@ -106,6 +100,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 8,
     paddingHorizontal: 10,
+    marginTop: 20,
     marginBottom: 10,
   },
   list: {

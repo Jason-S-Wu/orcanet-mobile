@@ -28,6 +28,7 @@ const Index = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
+        <Text style={styles.heading}>{activeTab}</Text>
         <TouchableOpacity style={styles.topBarButton}>
           <Ionicons name="settings" size={24} color="black" />
         </TouchableOpacity>
@@ -62,6 +63,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  heading: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    margin: 20,
   },
   topBar: {
     flexDirection: 'row',
