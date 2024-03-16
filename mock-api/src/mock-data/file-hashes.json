@@ -1,0 +1,16 @@
+{
+  "fileHashes": {
+    "9ae561e2aeaefe716c5b3ba2992d11375b7ebd71400b80dca4b25c1bcaa17395": {
+      "filename": "file1.txt",
+      "peerNodes": ["peer1", "peer2", "peer3"]
+    },
+    "5614594fd48a6e74cb79f4748ecd5be5efd434691c28c94bcc38a03cc827126d": {
+      "filename": "file2.txt",
+      "peerNodes": ["peer2", "peer3", "peer4"]
+    },
+    "5451dbeefa348bcac5e527a0f05dab5e02177644394906bf99781b0c0ffa5cb5": {
+      "filename": "file3.txt",
+      "peerNodes": ["peer1", "peer4", "peer5"]
+    }
+  }
+}

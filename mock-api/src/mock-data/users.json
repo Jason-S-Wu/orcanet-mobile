@@ -1,0 +1,39 @@
+{
+  "users": {
+    "efa0b22d8f27203157440feb67c5adf70617754c19aa42f5042b8cfbccf82721": {
+      "balance": 1000,
+      "transactions": [
+        {
+          "txId": "abc123",
+          "amount": -100,
+          "description": "Purchase"
+        },
+        {
+          "txId": "def456",
+          "amount": 500,
+          "description": "Deposit"
+        }
+      ]
+    },
+    "e1b35d12ce4c2c69131751617d0c965b34cd602d9db392f9dd5e3063c55f46d1": {
+      "balance": 2500,
+      "transactions": [
+        {
+          "txId": "ghi789",
+          "amount": -200,
+          "description": "Purchase"
+        },
+        {
+          "txId": "jkl012",
+          "amount": -50,
+          "description": "Withdrawal"
+        },
+        {
+          "txId": "mno345",
+          "amount": 1000,
+          "description": "Deposit"
+        }
+      ]
+    }
+  }
+}
