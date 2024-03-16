@@ -31,7 +31,12 @@ const Index = () => {
         <Text style={styles.heading}>{activeTab}</Text>
         <Text style={styles.heading}>Bal: 0 </Text>
         <TouchableOpacity style={styles.topBarButton}>
-          <Ionicons name="settings" size={24} color="black" />
+          <TouchableOpacity
+            onPress={() => setActiveTab('Setting')}
+            style={styles.tab}
+          >
+            <Ionicons name="settings" size={24} color="black" />
+          </TouchableOpacity>
         </TouchableOpacity>
       </View>
       <View style={styles.content}>{renderScreen()}</View>
