@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import ViewerTab from './Tabs/ViewerTab';
 import StatsTab from './Tabs/StatsTab';
 import SettingTab from './Tabs/SettingTab';
-import MarketTab from './Tabs/MarketTab';
+import MarketTab from './Tabs/MarketTab/MarketTab';
 import {Feather, FontAwesome, Ionicons} from '@expo/vector-icons';
 
 const Index = () => {
