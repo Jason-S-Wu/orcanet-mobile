@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {ListRenderItemInfo} from 'react-native';
 import {
   View,
   Text,
@@ -7,6 +6,9 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  Modal,
+  Button,
+  ListRenderItemInfo,
 } from 'react-native';
 import {marketData} from 'components/api/MockMarketData';
 import {MarketFile} from 'components/api/types';
@@ -19,7 +21,9 @@ const MarketTab = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<MarketFile[]>(marketData);
-  const { setAnimateIcon } = props
+  const [selectedFile, setSelectedFile] = useState<MarketFile | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const {setAnimateIcon} = props;
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -34,8 +38,8 @@ const MarketTab = (props: Props) => {
   };
 
   const handleBuyFile = (file: MarketFile) => {
-    // TODO: buy file function
-    setAnimateIcon(true);
+    setSelectedFile(file);
+    setShowConfirmation(true);
   };
 
   const handleCopyHash = (hash: string) => {
@@ -84,6 +88,15 @@ const MarketTab = (props: Props) => {
     </TouchableOpacity>
   );
 
+  const handleConfirmBuy = () => {
+    setAnimateIcon(true); 
+    setShowConfirmation(false);
+  };
+
+  const handleCancelBuy = () => {
+    setShowConfirmation(false);
+  };
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -98,6 +111,23 @@ const MarketTab = (props: Props) => {
         keyExtractor={item => item.fileHash.toString()}
         style={styles.list}
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showConfirmation}
+        onRequestClose={() => setShowConfirmation(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Are you sure you want to buy this file?
+            </Text>
+            <Button title="Confirm" onPress={handleConfirmBuy} />
+            <Button title="Cancel" onPress={handleCancelBuy} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -149,6 +179,23 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
