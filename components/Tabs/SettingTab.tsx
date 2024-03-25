@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 
 const SettingTab = () => {
-  const [generatedKey, setGeneratedKey] = useState(null);
+  const [generatedKey, setGeneratedKey] = useState<string|null>(null);
 
   const handleGenerateKey = () => {
     const newKey = Math.random().toString(36).substring(2, 10);
