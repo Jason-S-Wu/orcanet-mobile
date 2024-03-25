@@ -7,10 +7,13 @@ import MarketTab from './Tabs/MarketTab/MarketTab';
 import TransactionTab from './Tabs/TransactionTab';
 import {Feather, Ionicons, AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {MarketFile} from 'components/api/types';
 import AnimatedIcon from './AnimatedIcon';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('Market');
+  // mock data for now
+  const [File, setFile] = useState<MarketFile[]>([]);
   const [animateIcon, setAnimateIcon] = useState(false);
 
   const renderScreen = () => {
@@ -18,13 +21,19 @@ const Index = () => {
       case 'Viewer':
         return <ViewerTab />;
       case 'Market':
-        return <MarketTab setAnimateIcon={setAnimateIcon} />;
+        return (
+          <MarketTab
+            setAnimateIcon={setAnimateIcon}
+            setFile={setFile}
+            MyFile={File}
+          />
+        );
       case 'Stats':
         return <StatsTab />;
       case 'Setting':
         return <SettingTab />;
       case 'Transaction':
-        return <TransactionTab />;
+        return <TransactionTab setFile={setFile} MyFile={File} />;
       default:
         return null;
     }

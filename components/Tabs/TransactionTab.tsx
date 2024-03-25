@@ -1,101 +1,93 @@
+import {MarketFile} from 'components/api/types';
 import React, {useState} from 'react';
 import {
   View,
   Text,
-  TextInput,
-  TouchableOpacity,
   StyleSheet,
   FlatList,
+  TouchableOpacity,
+  ListRenderItemInfo,
 } from 'react-native';
-// import QRCode from 'react-native-qrcode-svg';
 
-const TransactionPage = () => {
-  const [amount, setAmount] = useState('');
-  const [recipient, setRecipient] = useState('');
-  const [description, setDescription] = useState('');
-  const [transactions, setTransactions] = useState([
-    {
-      id: '1',
-      amount: '100',
-      recipient: 'Recipient A',
-      description: 'Transaction 1',
-    },
-    {
-      id: '2',
-      amount: '200',
-      recipient: 'Recipient B',
-      description: 'Transaction 2',
-    },
-    {
-      id: '3',
-      amount: '300',
-      recipient: 'Recipient C',
-      description: 'Transaction 3',
-    },
-  ]);
+const transactions = [
+  {id: 1, date: '2022-01-01', amount: 50, description: 'Groceries'},
+  {id: 2, date: '2022-01-05', amount: 25, description: 'Restaurant'},
+  {id: 3, date: '2022-01-10', amount: 100, description: 'Clothing'},
+];
 
-  const handleTransaction = () => {
-    // Perform transaction logic here
-    const newTransaction = {
-      id: String(transactions.length + 1),
-      amount,
-      recipient,
-      description,
-    };
-    setTransactions([...transactions, newTransaction]);
-    // Reset form fields after transaction
-    setAmount('');
-    setRecipient('');
-    setDescription('');
+type Props = {
+  setFile: React.Dispatch<React.SetStateAction<MarketFile[]>>;
+  MyFile: MarketFile[];
+};
+
+const TransactionPage = (props: Props) => {
+  const [transactionHistory, setTransactionHistory] = useState(transactions);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const {setFile, MyFile} = props;
+
+  const renderTransactionItem = ({item}) => (
+    <View style={styles.transactionItem}>
+      <Text style={styles.transactionDate}>{item.date}</Text>
+      <Text style={styles.transactionAmount}>{item.amount}</Text>
+      <Text style={styles.transactionDescription}>{item.description}</Text>
+    </View>
+  );
+
+  const handleViewDetails = (file: MarketFile) => {
+    setExpandedItem(file.fileHash === expandedItem ? null : file.fileHash);
   };
+
+  const handleDeleteFile = (file: MarketFile) => {
+    const newList = MyFile.filter(item => item.fileHash !== file.fileHash);
+    setFile(newList);
+  };
+
+  const renderFileItem = ({item}: ListRenderItemInfo<MarketFile>) => (
+    <TouchableOpacity style={styles.item}>
+      <Text style={styles.itemName}>{item.name}</Text>
+      <Text style={styles.itemHash}>Cost: {item.size}</Text>
+      {expandedItem === item.fileHash && (
+        <View style={styles.additionalInfoContainer}>
+          <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
+          <Text style={styles.itemHash}>File Owner: User </Text>
+          <Text style={styles.itemHash}>ip: 123.123.123.123 </Text>
+          <Text style={styles.itemHash}>Size: {item.size}</Text>
+          <Text style={styles.itemHash}>Cost per MB: 1 </Text>
+        </View>
+      )}
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleViewDetails(item)}
+        >
+          <Text style={styles.actionText}>
+            {expandedItem === item.fileHash ? 'Hide Details' : 'View Details'}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleDeleteFile(item)}
+        >
+          <Text style={styles.actionText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Transaction Page</Text>
-      {/* <View style={styles.qrCodeContainer}>
-        <QRCode value="Your QR Code Data" size={200} />
-      </View> */}
-      <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Amount"
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={text => setAmount(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Recipient"
-          value={recipient}
-          onChangeText={text => setRecipient(text)}
-        />
-        <TextInput
-          style={[styles.input, styles.descriptionInput]}
-          placeholder="Description"
-          multiline
-          numberOfLines={4}
-          value={description}
-          onChangeText={text => setDescription(text)}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleTransaction}>
-          <Text style={styles.buttonText}>Execute Transaction</Text>
-        </TouchableOpacity>
-      </View>
-      {/* Transaction List */}
-      <View style={styles.transactionList}>
-        <Text style={styles.heading}>Transaction History</Text>
-        <FlatList
-          data={transactions}
-          keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <View style={styles.transactionItem}>
-              <Text>Amount: {item.amount}</Text>
-              <Text>Recipient: {item.recipient}</Text>
-              <Text>Description: {item.description}</Text>
-            </View>
-          )}
-        />
-      </View>
+      <Text style={styles.heading}>Transaction History</Text>
+      <FlatList
+        data={transactionHistory}
+        renderItem={renderTransactionItem}
+        keyExtractor={item => item.id.toString()}
+      />
+      <Text style={styles.heading}>My File</Text>
+      <FlatList
+        data={MyFile}
+        renderItem={renderFileItem}
+        keyExtractor={item => item.fileHash.toString()}
+      />
     </View>
   );
 };
@@ -103,56 +95,60 @@ const TransactionPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    padding: 20,
+    backgroundColor: '#fff',
   },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  qrCodeContainer: {
-    marginBottom: 20,
-  },
-  formContainer: {
-    width: '100%',
-    marginBottom: 20,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 20,
-  },
-  descriptionInput: {
-    height: 100,
-  },
-  button: {
-    backgroundColor: 'blue',
+  transactionItem: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
-  buttonText: {
-    color: 'white',
+  transactionDate: {
     fontSize: 16,
     fontWeight: 'bold',
+    marginBottom: 5,
   },
-  transactionList: {
+  transactionAmount: {
+    fontSize: 16,
+  },
+  transactionDescription: {
+    fontSize: 16,
     flex: 1,
-    width: '100%',
+    textAlign: 'right',
   },
-  transactionItem: {
+  item: {
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  itemName: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  itemHash: {
+    fontSize: 12,
+    marginTop: 5,
+  },
+  actionButton: {
+    backgroundColor: 'lightblue',
     padding: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    marginBottom: 10,
+    borderRadius: 5,
+  },
+  actionText: {
+    fontWeight: 'bold',
+  },
+  additionalInfoContainer: {
+    marginTop: 10,
+  },
+  actionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
 });
 

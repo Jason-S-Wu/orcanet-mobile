@@ -15,6 +15,8 @@ import {MarketFile} from 'components/api/types';
 
 type Props = {
   setAnimateIcon: React.Dispatch<React.SetStateAction<boolean>>;
+  setFile: React.Dispatch<React.SetStateAction<MarketFile[]>>;
+  MyFile: MarketFile[];
 };
 
 const MarketTab = (props: Props) => {
@@ -23,7 +25,8 @@ const MarketTab = (props: Props) => {
   const [filteredData, setFilteredData] = useState<MarketFile[]>(marketData);
   const [selectedFile, setSelectedFile] = useState<MarketFile | null>(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
-  const {setAnimateIcon} = props;
+  const [showAlreadyBrought, setShowAlreadyBrought] = useState<boolean>(false);
+  const {setAnimateIcon, setFile, MyFile} = props;
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -38,8 +41,15 @@ const MarketTab = (props: Props) => {
   };
 
   const handleBuyFile = (file: MarketFile) => {
-    setSelectedFile(file);
-    setShowConfirmation(true);
+    const tempHash = file.fileHash;
+    const tempHashList = MyFile.map(x => x.fileHash);
+
+    if (tempHashList.includes(tempHash)) {
+      setShowAlreadyBrought(true);
+    } else {
+      setSelectedFile(file);
+      setShowConfirmation(true);
+    }
   };
 
   const handleCopyHash = (hash: string) => {
@@ -89,12 +99,18 @@ const MarketTab = (props: Props) => {
   );
 
   const handleConfirmBuy = () => {
-    setAnimateIcon(true); 
+    MyFile.push(selectedFile);
+    setFile(MyFile)
+    setAnimateIcon(true);
     setShowConfirmation(false);
   };
 
   const handleCancelBuy = () => {
     setShowConfirmation(false);
+  };
+
+  const handleAlreadyBroughtModal = () => {
+    setShowAlreadyBrought(false);
   };
 
   return (
@@ -125,6 +141,20 @@ const MarketTab = (props: Props) => {
             </Text>
             <Button title="Confirm" onPress={handleConfirmBuy} />
             <Button title="Cancel" onPress={handleCancelBuy} />
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showAlreadyBrought}
+        onRequestClose={() => setShowAlreadyBrought(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>File already brought</Text>
+            <Button title="Cancel" onPress={handleAlreadyBroughtModal} />
           </View>
         </View>
       </Modal>
