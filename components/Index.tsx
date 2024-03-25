@@ -4,26 +4,46 @@ import ViewerTab from './Tabs/ViewerTab';
 import StatsTab from './Tabs/StatsTab';
 import SettingTab from './Tabs/SettingTab';
 import MarketTab from './Tabs/MarketTab/MarketTab';
-import {Feather, FontAwesome, Ionicons, AntDesign} from '@expo/vector-icons';
-import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
+import TransactionTab from './Tabs/TransactionTab';
+import {Feather, Ionicons, AntDesign, FontAwesome6} from '@expo/vector-icons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {MarketFile} from 'components/api/types';
+import AnimatedIcon from './AnimatedIcon';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('Market');
+  // mock data for now
+  const [File, setFile] = useState<MarketFile[]>([]);
+  const [animateIcon, setAnimateIcon] = useState(false);
 
   const renderScreen = () => {
     switch (activeTab) {
       case 'Viewer':
         return <ViewerTab />;
       case 'Market':
-        return <MarketTab />;
+        return (
+          <MarketTab
+            setAnimateIcon={setAnimateIcon}
+            setFile={setFile}
+            MyFile={File}
+          />
+        );
       case 'Stats':
         return <StatsTab />;
       case 'Setting':
         return <SettingTab />;
-
+      case 'Transaction':
+        return <TransactionTab setFile={setFile} MyFile={File} />;
       default:
         return null;
     }
+  };
+
+  const renderAnimatedIcon = () => {
+    if (animateIcon) {
+      return <AnimatedIcon onAnimationComplete={() => setAnimateIcon(false)} />;
+    }
+    return null;
   };
 
   const insets = useSafeAreaInsets();
@@ -74,7 +94,14 @@ const Index = () => {
         >
           <Feather name="bar-chart" size={24} color="black" />
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setActiveTab('Transaction')}
+          style={styles.tab}
+        >
+          <FontAwesome6 name="money-bill-transfer" size={24} color="black" />
+        </TouchableOpacity>
       </View>
+      {renderAnimatedIcon()}
     </View>
   );
 };
@@ -102,13 +129,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   rightItem: {
-    alignSelf: "flex-end"
+    alignSelf: 'flex-end',
   },
   centerItem: {
-    alignSelf: "center"
+    alignSelf: 'center',
   },
   leftItem: {
-    alignSelf: "flex-start"
+    alignSelf: 'flex-start',
   },
   content: {
     flex: 1,

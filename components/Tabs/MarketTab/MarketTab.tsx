@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import {ListRenderItemInfo} from 'react-native';
 import {
   View,
   Text,
@@ -7,14 +6,27 @@ import {
   FlatList,
   TouchableOpacity,
   TextInput,
+  Modal,
+  Button,
+  ListRenderItemInfo,
 } from 'react-native';
 import {marketData} from 'components/api/MockMarketData';
 import {MarketFile} from 'components/api/types';
 
-const MarketTab = () => {
+type Props = {
+  setAnimateIcon: React.Dispatch<React.SetStateAction<boolean>>;
+  setFile: React.Dispatch<React.SetStateAction<MarketFile[]>>;
+  MyFile: MarketFile[];
+};
+
+const MarketTab = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  // mock data for now
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<MarketFile[]>(marketData);
+  const [selectedFile, setSelectedFile] = useState<MarketFile | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
+  const [showAlreadyBrought, setShowAlreadyBrought] = useState<boolean>(false);
+  const {setAnimateIcon, setFile, MyFile} = props;
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -29,23 +41,38 @@ const MarketTab = () => {
   };
 
   const handleBuyFile = (file: MarketFile) => {
-    console.log(`Buying ${file.name} with Hash ${file.fileHash}`);
+    const tempHash = file.fileHash;
+    const tempHashList = MyFile.map(x => x.fileHash);
+
+    if (tempHashList.includes(tempHash)) {
+      setShowAlreadyBrought(true);
+    } else {
+      setSelectedFile(file);
+      setShowConfirmation(true);
+    }
   };
 
   const handleCopyHash = (hash: string) => {
     console.log(`Hash ${hash} copied to clipboard`);
   };
 
-  // Maybe not needed as all info is here
   const handleViewDetails = (file: MarketFile) => {
-    console.log(`Viewing details of ${file.name}`);
+    setExpandedItem(file.fileHash === expandedItem ? null : file.fileHash);
   };
 
   const renderFileItem = ({item}: ListRenderItemInfo<MarketFile>) => (
     <TouchableOpacity style={styles.item} onPress={() => handleSeletFile(item)}>
       <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
-      <Text style={styles.itemHash}>Size: {item.size}</Text>
+      <Text style={styles.itemHash}>Cost: {item.size}</Text>
+      {expandedItem === item.fileHash && (
+        <View style={styles.additionalInfoContainer}>
+          <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
+          <Text style={styles.itemHash}>File Owner: User </Text>
+          <Text style={styles.itemHash}>ip: 123.123.123.123 </Text>
+          <Text style={styles.itemHash}>Size: {item.size}</Text>
+          <Text style={styles.itemHash}>Cost per MB: 1 </Text>
+        </View>
+      )}
       <View style={styles.actionsContainer}>
         <TouchableOpacity
           style={styles.actionButton}
@@ -63,11 +90,28 @@ const MarketTab = () => {
           style={styles.actionButton}
           onPress={() => handleViewDetails(item)}
         >
-          <Text style={styles.actionText}>View Details</Text>
+          <Text style={styles.actionText}>
+            {expandedItem === item.fileHash ? 'Hide Details' : 'View Details'}
+          </Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
   );
+
+  const handleConfirmBuy = () => {
+    MyFile.push(selectedFile);
+    setFile(MyFile)
+    setAnimateIcon(true);
+    setShowConfirmation(false);
+  };
+
+  const handleCancelBuy = () => {
+    setShowConfirmation(false);
+  };
+
+  const handleAlreadyBroughtModal = () => {
+    setShowAlreadyBrought(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -83,6 +127,37 @@ const MarketTab = () => {
         keyExtractor={item => item.fileHash.toString()}
         style={styles.list}
       />
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showConfirmation}
+        onRequestClose={() => setShowConfirmation(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Are you sure you want to buy this file?
+            </Text>
+            <Button title="Confirm" onPress={handleConfirmBuy} />
+            <Button title="Cancel" onPress={handleCancelBuy} />
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showAlreadyBrought}
+        onRequestClose={() => setShowAlreadyBrought(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>File already brought</Text>
+            <Button title="Cancel" onPress={handleAlreadyBroughtModal} />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -119,6 +194,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 5,
   },
+  additionalInfoContainer: {
+    marginTop: 10,
+  },
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -131,6 +209,23 @@ const styles = StyleSheet.create({
   },
   actionText: {
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
