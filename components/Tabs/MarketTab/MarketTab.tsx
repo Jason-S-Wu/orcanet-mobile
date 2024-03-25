@@ -11,10 +11,15 @@ import {
 import {marketData} from 'components/api/MockMarketData';
 import {MarketFile} from 'components/api/types';
 
-const MarketTab = () => {
+type Props = {
+  setAnimateIcon: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const MarketTab = (props: Props) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<MarketFile[]>(marketData);
+  const { setAnimateIcon } = props
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -29,7 +34,8 @@ const MarketTab = () => {
   };
 
   const handleBuyFile = (file: MarketFile) => {
-    console.log(`Buying ${file.name} with Hash ${file.fileHash}`);
+    // TODO: buy file function
+    setAnimateIcon(true);
   };
 
   const handleCopyHash = (hash: string) => {
