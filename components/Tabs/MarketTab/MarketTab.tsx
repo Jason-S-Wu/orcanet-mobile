@@ -13,7 +13,7 @@ import {MarketFile} from 'components/api/types';
 
 const MarketTab = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  // mock data for now
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
   const [filteredData, setFilteredData] = useState<MarketFile[]>(marketData);
 
   const handleSearchInputChange = (query: string) => {
@@ -36,16 +36,23 @@ const MarketTab = () => {
     console.log(`Hash ${hash} copied to clipboard`);
   };
 
-  // Maybe not needed as all info is here
   const handleViewDetails = (file: MarketFile) => {
-    console.log(`Viewing details of ${file.name}`);
+    setExpandedItem(file.fileHash === expandedItem ? null : file.fileHash);
   };
 
   const renderFileItem = ({item}: ListRenderItemInfo<MarketFile>) => (
     <TouchableOpacity style={styles.item} onPress={() => handleSeletFile(item)}>
       <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
-      <Text style={styles.itemHash}>Size: {item.size}</Text>
+      <Text style={styles.itemHash}>Cost: {item.size}</Text>
+      {expandedItem === item.fileHash && (
+        <View style={styles.additionalInfoContainer}>
+          <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
+          <Text style={styles.itemHash}>File Owner: User </Text>
+          <Text style={styles.itemHash}>ip: 123.123.123.123 </Text>
+          <Text style={styles.itemHash}>Size: {item.size}</Text>
+          <Text style={styles.itemHash}>Cost per MB: 1 </Text>
+        </View>
+      )}
       <View style={styles.actionsContainer}>
         <TouchableOpacity
           style={styles.actionButton}
@@ -63,7 +70,9 @@ const MarketTab = () => {
           style={styles.actionButton}
           onPress={() => handleViewDetails(item)}
         >
-          <Text style={styles.actionText}>View Details</Text>
+          <Text style={styles.actionText}>
+            {expandedItem === item.fileHash ? 'Hide Details' : 'View Details'}
+          </Text>
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -118,6 +127,9 @@ const styles = StyleSheet.create({
   itemHash: {
     fontSize: 12,
     marginTop: 5,
+  },
+  additionalInfoContainer: {
+    marginTop: 10,
   },
   actionsContainer: {
     flexDirection: 'row',

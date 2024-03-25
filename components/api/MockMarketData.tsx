@@ -9,20 +9,20 @@ export const marketData = [
     name: 'The Dark Knight',
     size: 1800, // 1.8 GB
   },
-  {
-    fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFLd',
-    name: 'Inception',
-    size: 2200, // 2.2 GB
-  },
-  {
-    fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFL3',
-    name: 'Barbie',
-    size: 2500, // 2.5 GB
-  },
-  {
-    fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFL4',
-    name: 'Minions',
-    size: 2200, // 1.2 GB
-  },
+  // {
+  //   fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFLd',
+  //   name: 'Inception',
+  //   size: 2200, // 2.2 GB
+  // },
+  // {
+  //   fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFL3',
+  //   name: 'Barbie',
+  //   size: 2500, // 2.5 GB
+  // },
+  // {
+  //   fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFL4',
+  //   name: 'Minions',
+  //   size: 2200, // 1.2 GB
+  // },
   // Add more mock files as needed
 ];
