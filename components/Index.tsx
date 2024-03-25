@@ -4,10 +4,11 @@ import ViewerTab from './Tabs/ViewerTab';
 import StatsTab from './Tabs/StatsTab';
 import SettingTab from './Tabs/SettingTab';
 import MarketTab from './Tabs/MarketTab/MarketTab';
-import {Feather, FontAwesome, Ionicons} from '@expo/vector-icons';
+import {Feather, FontAwesome, Ionicons, AntDesign} from '@expo/vector-icons';
+import { useSafeAreaInsets, SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('Viewer');
+  const [activeTab, setActiveTab] = useState('Market');
 
   const renderScreen = () => {
     switch (activeTab) {
@@ -25,19 +26,33 @@ const Index = () => {
     }
   };
 
+  const insets = useSafeAreaInsets();
+  const paddingWithInsets = {
+    paddingTop: insets.top,
+    paddingBottom: insets.bottom,
+    paddingLeft: insets.left,
+    paddingRight: insets.right,
+  };
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, paddingWithInsets]}>
       <View style={styles.topBar}>
-        <Text style={styles.heading}>{activeTab}</Text>
-        <Text style={styles.heading}>Bal: 0 </Text>
-        <TouchableOpacity style={styles.topBarButton}>
-          <TouchableOpacity
-            onPress={() => setActiveTab('Setting')}
-            style={styles.tab}
-          >
-            <Ionicons name="settings" size={24} color="black" />
+        <View style={styles.topBarItem}>
+          <Text style={[styles.heading, styles.leftItem]}>{activeTab}</Text>
+        </View>
+        <View style={styles.topBarItem}>
+          <Text style={[styles.heading, styles.centerItem]}>Bal: 0</Text>
+        </View>
+        <View style={styles.topBarItem}>
+          <TouchableOpacity style={styles.rightItem}>
+            <TouchableOpacity
+              onPress={() => setActiveTab('Setting')}
+              style={styles.tab}
+            >
+              <Ionicons name="settings" size={24} color="black" />
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.content}>{renderScreen()}</View>
       <View style={styles.bottomBar}>
@@ -45,13 +60,13 @@ const Index = () => {
           onPress={() => setActiveTab('Viewer')}
           style={styles.tab}
         >
-          <FontAwesome name="play" size={24} color="black" />
+          <AntDesign name="file1" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('Market')}
           style={styles.tab}
         >
-          <Feather name="file" size={24} color="black" />
+          <Feather name="shopping-cart" size={24} color="black" />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('Stats')}
@@ -80,12 +95,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#eee',
-    paddingTop: 10,
+    paddingVertical: 10,
     width: '100%',
   },
-  topBarButton: {
-    padding: 30,
-    marginTop: 40,
+  topBarItem: {
+    flex: 1,
+  },
+  rightItem: {
+    alignSelf: "flex-end"
+  },
+  centerItem: {
+    alignSelf: "center"
+  },
+  leftItem: {
+    alignSelf: "flex-start"
   },
   content: {
     flex: 1,
