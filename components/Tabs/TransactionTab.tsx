@@ -7,6 +7,8 @@ import {
   FlatList,
   TouchableOpacity,
   ListRenderItemInfo,
+  Modal,
+  Button,
 } from 'react-native';
 
 const transactions = [
@@ -23,6 +25,7 @@ type Props = {
 const TransactionPage = (props: Props) => {
   const [transactionHistory, setTransactionHistory] = useState(transactions);
   const [expandedItem, setExpandedItem] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const {setFile, MyFile} = props;
 
   const renderTransactionItem = ({item}) => (
@@ -37,41 +40,66 @@ const TransactionPage = (props: Props) => {
     setExpandedItem(file.fileHash === expandedItem ? null : file.fileHash);
   };
 
-  const handleDeleteFile = (file: MarketFile) => {
+  const handleDeleteFile = () => {
+    setShowConfirmation(true);
+  };
+  const handleConfirmDelete = (file: MarketFile) => {
     const newList = MyFile.filter(item => item.fileHash !== file.fileHash);
     setFile(newList);
+    setShowConfirmation(false);
+  };
+  const handleCancelDelete = () => {
+    setShowConfirmation(false);
   };
 
   const renderFileItem = ({item}: ListRenderItemInfo<MarketFile>) => (
-    <TouchableOpacity style={styles.item}>
-      <Text style={styles.itemName}>{item.name}</Text>
-      <Text style={styles.itemHash}>Cost: {item.size}</Text>
-      {expandedItem === item.fileHash && (
-        <View style={styles.additionalInfoContainer}>
-          <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
-          <Text style={styles.itemHash}>File Owner: User </Text>
-          <Text style={styles.itemHash}>ip: 123.123.123.123 </Text>
-          <Text style={styles.itemHash}>Size: {item.size}</Text>
-          <Text style={styles.itemHash}>Cost per MB: 1 </Text>
+    <View>
+      <TouchableOpacity style={styles.item}>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemHash}>Cost: {item.size}</Text>
+        {expandedItem === item.fileHash && (
+          <View style={styles.additionalInfoContainer}>
+            <Text style={styles.itemHash}>Hash: {item.fileHash}</Text>
+            <Text style={styles.itemHash}>File Owner: User </Text>
+            <Text style={styles.itemHash}>ip: 123.123.123.123 </Text>
+            <Text style={styles.itemHash}>Size: {item.size}</Text>
+            <Text style={styles.itemHash}>Cost per MB: 1 </Text>
+          </View>
+        )}
+        <View style={styles.actionsContainer}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleViewDetails(item)}
+          >
+            <Text style={styles.actionText}>
+              {expandedItem === item.fileHash ? 'Hide Details' : 'View Details'}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => handleDeleteFile()}
+          >
+            <Text style={styles.actionText}>Delete</Text>
+          </TouchableOpacity>
         </View>
-      )}
-      <View style={styles.actionsContainer}>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleViewDetails(item)}
-        >
-          <Text style={styles.actionText}>
-            {expandedItem === item.fileHash ? 'Hide Details' : 'View Details'}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleDeleteFile(item)}
-        >
-          <Text style={styles.actionText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showConfirmation}
+        onRequestClose={() => setShowConfirmation(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>
+              Are you sure you want to delete this file?
+            </Text>
+            <Button title="Confirm" onPress={() => handleConfirmDelete(item)} />
+            <Button title="Cancel" onPress={() => handleCancelDelete} />
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 
   return (
@@ -149,6 +177,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
