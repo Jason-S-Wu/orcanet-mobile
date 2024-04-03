@@ -9,10 +9,10 @@ import {Feather, Ionicons, AntDesign, FontAwesome6} from '@expo/vector-icons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {MarketFile} from 'components/api/types';
 import AnimatedIcon from './AnimatedIcon';
+import {Animated} from 'react-native';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('Market');
-  // mock data for now
   const [File, setFile] = useState<MarketFile[]>([]);
   const [animateIcon, setAnimateIcon] = useState(false);
 
@@ -74,31 +74,37 @@ const Index = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.content}>{renderScreen()}</View>
+      <Animated.View style={styles.content}>{renderScreen()}</Animated.View>
       <View style={styles.bottomBar}>
         <TouchableOpacity
           onPress={() => setActiveTab('Viewer')}
           style={styles.tab}
         >
           <AntDesign name="file1" size={24} color="black" />
+          <Text>Viewer</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('Market')}
           style={styles.tab}
         >
           <Feather name="shopping-cart" size={24} color="black" />
+          <Text>Market</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('Stats')}
           style={styles.tab}
         >
           <Feather name="bar-chart" size={24} color="black" />
+          <Text>Stats</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setActiveTab('Transaction')}
           style={styles.tab}
         >
           <FontAwesome6 name="money-bill-transfer" size={24} color="black" />
+          <Text numberOfLines={1} ellipsizeMode="tail">
+            Transaction
+          </Text>
         </TouchableOpacity>
       </View>
       {renderAnimatedIcon()}
@@ -109,21 +115,23 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
   },
   heading: {
     fontSize: 24,
     fontWeight: 'bold',
     margin: 20,
+    color: '#333',
   },
   topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     paddingVertical: 10,
     width: '100%',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
   },
   topBarItem: {
     flex: 1,
@@ -145,13 +153,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     paddingVertical: 10,
     width: '100%',
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
   },
   tab: {
     padding: 20,
     paddingHorizontal: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

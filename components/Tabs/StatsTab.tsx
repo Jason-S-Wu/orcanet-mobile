@@ -44,9 +44,9 @@ const StatTab = () => {
         yAxisLabel=""
         yAxisSuffix="GB"
         chartConfig={{
-          backgroundColor: '#ffffff',
-          backgroundGradientFrom: '#ffffff',
-          backgroundGradientTo: '#ffffff',
+          backgroundColor: '#F5F5F5',
+          backgroundGradientFrom: '#F5F5F5',
+          backgroundGradientTo: '#F5F5F5',
           decimalPlaces: 1,
           color: (opacity = 1) => `rgba(0, 123, 255, ${opacity})`,
           style: {
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   graphContainer: {
     marginVertical: 8,
     borderRadius: 16,
+    backgroundColor: '#F5F5F5',
   },
   switchButton: {
     marginTop: 20,
