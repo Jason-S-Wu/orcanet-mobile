@@ -2,9 +2,15 @@ import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { ResizeMode, Video } from 'expo-av';
 
-const ViewerTab = () => {
+type Props = {
+  videoHash : string
+}
+
+const ViewerTab = (props: Props) => {
   const video = useRef(null);
   const [status, setStatus] = useState({});
+
+  const {videoHash} = props
 
   return (
     <View style={styles.container}>
@@ -12,11 +18,12 @@ const ViewerTab = () => {
         ref={video}
         style={styles.video}
         source={{
-          uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+          uri: 'http://localhost:5000/video?hash=' + videoHash,
         }}
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
         onPlaybackStatusUpdate={status => setStatus(() => status)}
+        shouldPlay={true}
       />
     </View>
   );

@@ -14,18 +14,21 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState('Market');
   // mock data for now
   const [File, setFile] = useState<MarketFile[]>([]);
+  const [ActiveHash, setActiveHash] = useState<string>();
   const [animateIcon, setAnimateIcon] = useState(false);
 
   const renderScreen = () => {
     switch (activeTab) {
       case 'Viewer':
-        return <ViewerTab />;
+        return <ViewerTab videoHash={ActiveHash} />;
       case 'Market':
         return (
           <MarketTab
             setAnimateIcon={setAnimateIcon}
             setFile={setFile}
+            setActiveHash={setActiveHash}
             MyFile={File}
+            setActiveTab={setActiveTab}
           />
         );
       case 'Stats':
@@ -77,7 +80,7 @@ const Index = () => {
       <View style={styles.content}>{renderScreen()}</View>
       <View style={styles.bottomBar}>
         <TouchableOpacity
-          onPress={() => setActiveTab('Viewer')}
+          onPress={() => setActiveTab('Transaction')}
           style={styles.tab}
         >
           <AntDesign name="file1" size={24} color="black" />
