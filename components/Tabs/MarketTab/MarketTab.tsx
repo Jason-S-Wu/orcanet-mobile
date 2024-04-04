@@ -12,10 +12,13 @@ import {
 } from 'react-native';
 import {marketData} from 'components/api/MockMarketData';
 import {MarketFile} from 'components/api/types';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
   setAnimateIcon: React.Dispatch<React.SetStateAction<boolean>>;
   setFile: React.Dispatch<React.SetStateAction<MarketFile[]>>;
+  setActiveHash: React.Dispatch<React.SetStateAction<string>>;
+  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
   MyFile: MarketFile[];
 };
 
@@ -26,7 +29,7 @@ const MarketTab = (props: Props) => {
   const [selectedFile, setSelectedFile] = useState<MarketFile | null>(null);
   const [showConfirmation, setShowConfirmation] = useState<boolean>(false);
   const [showAlreadyBrought, setShowAlreadyBrought] = useState<boolean>(false);
-  const {setAnimateIcon, setFile, MyFile} = props;
+  const {setAnimateIcon, setFile, setActiveHash, setActiveTab, MyFile} = props;
 
   const handleSearchInputChange = (query: string) => {
     setSearchQuery(query);
@@ -98,11 +101,16 @@ const MarketTab = (props: Props) => {
     </TouchableOpacity>
   );
 
-  const handleConfirmBuy = () => {
+  const handleConfirmBuy = (view : boolean) => {
     MyFile.push(selectedFile);
     setFile(MyFile)
     setAnimateIcon(true);
     setShowConfirmation(false);
+
+    if(view){
+      setActiveHash(selectedFile.fileHash);
+      setActiveTab("Viewer");
+    }
   };
 
   const handleCancelBuy = () => {
@@ -139,8 +147,16 @@ const MarketTab = (props: Props) => {
             <Text style={styles.modalText}>
               Are you sure you want to buy this file?
             </Text>
-            <Button title="Confirm" onPress={handleConfirmBuy} />
-            <Button title="Cancel" onPress={handleCancelBuy} />
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setShowConfirmation(false)}
+            >
+              <Icon name="close" size={25} color="black" />
+            </TouchableOpacity>
+            <View style={styles.buttonsContainer}>
+              <Button title="View" onPress={() => handleConfirmBuy(true)} />
+              <Button title="Download" onPress={() => handleConfirmBuy(false)} />
+            </View>
           </View>
         </View>
       </Modal>
@@ -214,18 +230,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // semi-transparent black background
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     padding: 20,
     borderRadius: 10,
-    alignItems: 'center',
+    width: '80%', // Adjust the width as per your requirement
   },
   modalText: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 20,
-    textAlign: 'center',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width:25,
+    height:25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

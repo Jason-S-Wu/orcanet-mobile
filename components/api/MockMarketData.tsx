@@ -9,6 +9,11 @@ export const marketData = [
     name: 'The Dark Knight',
     size: 1800, // 1.8 GB
   },
+  {
+    fileHash: 'video.mp4',
+    name: 'Spongebob',
+    size: 100, // 0.1 GB
+  },
   // {
   //   fileHash: 'QmUx6Qe3c56JpV93HZqo51FUsXbt7YvLpcRUPFDK5ewFLd',
   //   name: 'Inception',
